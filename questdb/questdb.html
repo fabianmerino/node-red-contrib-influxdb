@@ -1,0 +1,166 @@
+<script type="text/html" data-template-name="questdb">
+    <div class="form-row" style="min-width: 500px;">
+        <label for="node-config-input-name"><i class="fa fa-tag"></i> <span data-i18n="node-red:common.label.name"></span></label>
+        <input type="text" id="node-config-input-name" data-i18n="[placeholder]node-red:common.label.name">
+    </div>
+    <div class="form-row" id="node-config-row-protocol">
+        <label for="node-config-input-protocol"><i class="fa fa-external-link"></i> <span data-i18n="questdb.label.protocol"></span></label>
+        <select type="text" id="node-config-input-protocol" style="width: 40%;">
+            <option value="http">HTTP</option>
+            <option value="tcp">TCP</option>
+        </select>
+    </div>
+    <div class="form-row" id="node-config-row-hostname-port">
+        <label for="node-config-input-hostname"><i class="fa fa-server"></i> <span data-i18n="questdb.label.host"></span></label>
+        <input class="input-append-left" type="text" id="node-config-input-hostname" placeholder="localhost" style="width: 40%;" >
+        <label for="node-config-input-port" style="margin-left: 10px; width: 35px; "> <span data-i18n="questdb.label.port"></span></label>
+        <input type="text" id="node-config-input-port" style="width:45px" placeholder="9000">
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('questdb', {
+        category: 'config',
+        color: "rgb(221, 224, 233)",
+        defaults: {
+            hostname: { value: "127.0.0.1", required: true },
+            port: { value: 9000, required: true },
+            protocol: { value: "http", required: true },
+            name: { value: "" },
+        },
+        // credentials: {
+        //     username: { type: "text" },
+        //     password: { type: "password" },
+        //     token: { type: "password" }
+        // },
+        label: function () {
+            return this.name ? this.name : this.hostname + ":" + this.port;
+        },
+    });
+</script>
+
+<script type="text/html" data-template-name="questdb out">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="node-red:common.label.name"></span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-questdb"><i class="fa fa-server"></i> <span data-i18n="questdb.label.server"></span></label>
+        <input type="text" id="node-input-questdb">
+    </div>
+    <div class="form-row">
+        <label for="node-input-table"><i style="width: 10px;" class="fa fa-rss"></i> <span data-i18n="questdb.label.table"></span></label>
+        <input type="text" id="node-input-table">
+    </div>
+    <div class="form-row" id="node-input-row-precision">
+        <label for="node-input-precision" style="width:35%"><i class="fa fa-clock-o"></i> <span data-i18n="questdb.label.time-precision"></span></label>
+        <select type="text" id="node-input-precision" style="width:55%">
+            <option value="ns">Nanoseconds (ns)</option>
+            <option value="us">Microseconds (us)</option>
+            <option value="ms">Milliseconds (ms)</option>
+        </select>
+    </div>
+    <div class="form-tips" id="node-warning-table"><span data-i18n="[html]questdb.tip.table"></span></div>
+</script>
+
+<script type="text/html" data-help-name="questdb out">
+    <p>A simple questdb output node to write columns and symbols to an questdb table.</p>
+    <p>The fields and tags to write are in <b>msg.payload</b>. If <b>msg.payload</b> is a string, number, or boolean,
+    it will be written as a single value to the specified measurement (called <i>value</i>).</p>
+    <p>If <b>msg.payload</b> is an object containing multiple properties, the fields will be written to the table.</p>
+    <p>If <b>msg.payload</b> is an array containing two objects, the first object will be written as the set of named fields,
+    the second is the set of named tags.</p>
+    <p>Finally, if <b>msg.payload</b> is an array of arrays, it will be written as a series of points containing fields and tags.</p>
+    <p>If the <i>table</i> field is not set in the node configuration, the user can send in data with a specified table
+        name in <b>msg.table</b> to overwrite the <i>table</i> field in the configuration of the node.</p>
+
+    <p>Check <i>Advanced Query Options</i> to specify a time precision for the insertion.<p>
+    <p>The advanced query options <i>Time Precision</i> can be overwritten using
+    message property <b>msg.precision</b> in the node configuration.</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('questdb out', {
+        category: 'storage-output',
+        color: "rgb(221, 224, 233)",
+        defaults: {
+            questdb: { type: "questdb", required: true },
+            name: { value: "" },
+            table: { value: "" },
+            precision: { value: "ms" },
+        },
+        inputs: 1,
+        outputs: 0,
+        icon: "questdb.svg",
+        align: "right",
+        label: function () {
+            var questdbNode = RED.nodes.node(this.questdb);
+            return this.name || (questdbNode ? questdbNode.label() + " " + this.table : "questdb");
+        },
+        labelStyle: function () {
+            return this.name ? "node_label_italic" : "";
+        },
+        oneditprepare: function () {
+            $("#node-input-table").change(function () {
+                if ($("#node-input-table").val() === "") {
+                    $("#node-warning-table").show();
+                } else {
+                    $("#node-warning-table").hide();
+                }
+            });
+        },
+    });
+</script>
+
+<script type="text/html" data-template-name="questdb batch">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="node-red:common.label.name"></span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-questdb"><i class="fa fa-server"></i> <span data-i18n="questdb.label.server"></span></label>
+        <input type="text" id="node-input-questdb">
+    </div>
+    <div class="form-row" id="node-input-row-precision">
+        <label for="node-input-precision" style="width:35%"><i class="fa fa-clock-o"></i> <span data-i18n="questdb.label.time-precision"></span></label>
+        <select type="text" id="node-input-precision" style="width:55%">
+            <option value="ns">Nanoseconds (ns)</option>
+            <option value="us">Microseconds (us)</option>
+            <option value="ms">Milliseconds (ms)</option>
+        </select>
+    </div>
+</script>
+
+<script type="text/html" data-help-name="questdb batch">
+    <p>A questdb output node to write multiple rows (columns and symbols) to multiple questdb tables.</p>
+    <p>The <b>msg.payload</b> needs to be an array of <i>row</i> objects.</p>
+    <p>The <b>table</b> property of a row contains the name of the table for the row. The <b>columns</b> property will contain the
+    columns of the table.  If supplied, the <b>symbols</b> property will contain the symbols for the row. To set the time
+    for the row, supply a <b>timestamp</b> property.</p>
+    <p>The advanced query options <i>Time Precision</i> can be overwritten using
+    message properties <b>msg.precision</b></b>.</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('questdb batch', {
+        category: 'storage-output',
+        color: "rgb(221, 224, 233)",
+        paletteLabel: 'questdb batch',
+        defaults: {
+            questdb: { type: "questdb", required: true },
+            precision: { value: "" },
+            name: { value: "" },
+        },
+        inputs: 1,
+        outputs: 0,
+        icon: "questdb.svg",
+        align: "right",
+        label: function () {
+            var questdbNode = RED.nodes.node(this.questdb);
+            return this.name || (questdbNode ? questdbNode.label() : "questdb batch");
+        },
+        labelStyle: function () {
+            return this.name ? "node_label_italic" : "";
+        },
+    });
+</script>

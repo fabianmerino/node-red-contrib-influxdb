@@ -1,42 +1,37 @@
 {
-  "name": "node-red-contrib-influxdb",
-  "version": "0.7.0",
-  "description": "Node-RED nodes to save and query data from an influxdb time series database",
-  "main": "influxdb.js",
+  "name": "@fabianmerino/node-red-questdb",
+  "version": "0.0.1",
+  "description": "Node-RED nodes to save and query data from an questdb time series database",
+  "main": "questdb/questdb.js",
   "scripts": {
     "test": "echo \"Error: no test specified yet!\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mblackstock/node-red-contrib-influxdb"
+    "url": "https://github.com/fabianmerino/node-red-contrib-questdb"
   },
   "contributors": [
     {
-      "name": "Mike Blackstock",
-      "email": "mikeblackstock@gmail.com",
-      "url": "http://mblackstock.com"
-    },
-    {
-      "name": "Alberto Armijo",
-      "email": "alberto.arm@gmail.com"
+      "name": "Fabian Merino",
+      "email": "fabianary.merino@gmail.com"
     }
   ],
   "license": "Apache-2.0",
   "keywords": [
     "node-red",
-    "influxdb"
+    "questdb"
   ],
   "node-red": {
+    "version": ">=2.0.0",
     "nodes": {
-      "influxdb": "influxdb.js"
+      "questdb": "questdb/questdb.js"
     }
   },
   "dependencies": {
-    "influx": "~5.9.3",
-    "@influxdata/influxdb-client": "~1.33.2",
+    "@questdb/nodejs-client": "3.0.0",
     "lodash": "~4.17.21"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=16"
   }
 }

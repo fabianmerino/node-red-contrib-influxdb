@@ -1,10 +1,11 @@
 {
-    "influxdb": {
+    "questdb": {
         "label": {
             "host": "Host",
             "port": "Port",
             "database": "Database",
-            "measurement":"Measurement",
+            "protocol": "Protocol",
+            "table":"Table",
             "server":"Server",
             "query":"Query",
             "use-tls": "Enable secure (SSL/TLS) connection",
@@ -17,19 +18,16 @@
             "url": "URL",
             "token": "Token",
             "timeout": "Connection timeout (seconds)",
-            "reject-unauthorized": "Verify server certificate",
-            "org": "Organization",
-            "bucket": "Bucket"
+            "reject-unauthorized": "Verify server certificate"
         },
         "errors":{
-            "nomeasurement":"No measurement specified",
+            "notable":"No table specified",
             "missingconfig":"Configuration missing",
             "invalidconfig":"Configuration invalid",
             "noquery":"No query"
         },
         "tip": {
-            "measurement": "<b> Tip:</b> If no measurement is specified, ensure <b>msg.measurement</b> contains the measurement name.",
-            "retention-policy": "<b> Tip:</b> If no retention policy is specified, <b>autogen</b> will be assumed.",
+            "table": "<b> Tip:</b> If no table is specified, ensure <b>msg.table</b> contains the table name.",
             "querytip": "<b> Tip:</b> If no query is set, ensure <b>msg.query</b> contains a query."
         }
     }

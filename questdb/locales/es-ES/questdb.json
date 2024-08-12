@@ -1,10 +1,11 @@
 {
-    "influxdb": {
+    "questdb": {
         "label": {
             "host": "Host",
             "port": "Port",
             "database": "Database",
-            "measurement":"Medición",
+            "protocol": "Protocolo",
+            "table":"Tabla",
             "server":"Servidor",
             "query":"Petición",
             "use-tls": "Activar conexión (SSL/TLS) segura",
@@ -17,19 +18,16 @@
             "url": "URL",
             "token": "Token",
             "timeout": "Connection timeout (seconds)",
-            "reject-unauthorized": "Verificar el certificado del servidor",
-            "org": "Organización",
-            "bucket": "Bucket"
+            "reject-unauthorized": "Verificar el certificado del servidor"
         },
         "errors":{
-            "nomeasurement":"No se ha especificado una medición",
+            "nometable":"No se ha especificado una tabla",
             "missingconfig":"Configuración incompleta",
             "invalidconfig":"Configuration no válida",
             "noquery":"No query"
         },
         "tip": {
-            "measurement": "<b> Consejo:</b> Si no se especifica una medición, asegúrate de que <b>msg.measurement</b> contiene el nombre de la medición.",
-            "retention-policy": "<b> Consejo:</b> Si no se especifica una política de retención, se asume <b>autogen</b>.",
+            "table": "<b> Consejo:</b> Si no se especifica una tabla, asegúrate de que <b>msg.table</b> contiene el nombre de la tabla.",
             "querytip": "<b> Consejo:</b> Si no se incluye una petición, asegúrate de que <b>msg.query</b> contiene una."
         }
     }
